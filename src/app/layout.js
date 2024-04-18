@@ -3,7 +3,6 @@ import "./globals.css";
 import Image from 'next/image';
 
 
-
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
@@ -16,11 +15,11 @@ export default function RootLayout({ children }) {
     <html lang="en">
     <body className={inter.className}>
       <header style={{ 
-        padding: "1rem",
+        padding: "2rem",
       }}
       >
         
-        <Image src="/logo_color.svg" alt="KiteMill Logo" width={144} height={146} />
+        <Image src="/logo_color.svg" alt="KiteMill Logo" width={150} height={150} />
         
     </header>{children}
     <footer

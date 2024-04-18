@@ -27,7 +27,7 @@ const Form = () => {
     { value: 'hseIncident', label: 'HSE Incident' },
     { value: 'qualityNonConformity', label: 'Quality Non Conformity' },
     { value: 'areasOfImprovements', label: 'Areas of Improvement' },
-    { value: 'other', label: 'Other' }, 
+    //{ value: 'other', label: 'Other' }, 
   ];
 
 
@@ -53,7 +53,7 @@ const Form = () => {
         { value: 'incorrectAssembly', label: 'Incorrect Assembly' },
         { value: 'contamination', label: 'Contamination' },
         { value: 'nonCompliantItem', label: 'Non-Compliant Item' },
-        { value: 'nonCompliantItem', label: 'Non-Compliant Item' },
+        { value: 'wrongLabellingPackaging', label: 'Wrong Labelling / Packaging' },
         { value: 'lackofControl', label: 'Lack of Control' },
         { value: 'deviationFromPlan', label: 'Deviation from Plan' },
         { value: 'others', label: 'Others' },
@@ -134,7 +134,7 @@ const Form = () => {
         { value: 'others', label: 'Others' },
       ],
       'other': [
-        { value: 'other', label: 'Other' },
+      { value: 'other', label: 'Other' },
       ] 
     };
   
@@ -149,27 +149,27 @@ const Form = () => {
     'r&d': [
       { value: 'kitePowerSupplyandWiring', label: 'Kite power supply and wiring' },
       { value: 'vtolSystem', label: 'VTOL system' },
-      { value: 'others', label: 'Others' },
+      //{ value: 'others', label: 'Others' },
     ],
     'manufacturing': [
       { value: 'productServices', label: 'Product/Services' },
       { value: 'externalSupplier', label: 'External supplier' },
       { value: 'qualityAssurance', label: 'Quality Assurance' },
       { value: 'productionO&M', label: 'Production/O&M' },
-      { value: 'others', label: 'Others' },
+      //{ value: 'others', label: 'Others' },
     ],
     'flightOperations': [
       { value: 'preparationTransportCleanup', label: 'Preparation/Transport/Cleanup' },
       { value: 'unsecureScrewsBolts', label: 'Unsecure screws/Bolts' },
       { value: 'unsuccessfulAutoland', label: 'Unsuccessful Autoland' },
       { value: 'unwantedTetherRelease', label: 'Unwanted tether releases' },
-      { value: 'others', label: 'Others' },
+      //{ value: 'others', label: 'Others' },
     ],
     'administration': [
       { value: 'hse', label: 'HSE' },
       { value: 'it', label: 'IT' },
       { value: 'purchase', label: 'Purchase' },
-      { value: 'others', label: 'Others' },
+      //{ value: 'others', label: 'Others' },
     ],
   };
 
@@ -310,7 +310,9 @@ const Form = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="max-w-3xl mx-auto p-4 space-y-4 bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+    
+    <form name="nciForm" onSubmit={handleSubmit} className="max-w-3xl mx-auto p-5 space-y-4 bg-white shadow-lg rounded px-8 pt-8 pb-8 mb-4">
+      <h1 className="block text-gray-500 text-2xl font-bold mb-5 text-center font-sans">Non-Conformity & Incident Form</h1>
       <div>
         <label htmlFor="createdBy" className="block text-gray-700 text-sm font-bold mb-2">Created By:</label>
         <input
