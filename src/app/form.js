@@ -309,12 +309,8 @@ const Form = () => {
     }),
   };
 
-
-
-
-
   return (
-    <form onSubmit={handleSubmit} className="max-w-md mx-auto p-4 space-y-4 bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+    <form onSubmit={handleSubmit} className="max-w-3xl mx-auto p-4 space-y-4 bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
       <div>
         <label htmlFor="createdBy" className="block text-gray-700 text-sm font-bold mb-2">Created By:</label>
         <input

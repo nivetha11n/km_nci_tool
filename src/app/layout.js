@@ -1,5 +1,8 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
+import Image from 'next/image';
+
+
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -11,7 +14,22 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
-    </html>
+    <body className={inter.className}>
+      <header style={{ 
+        padding: "1rem",
+      }}
+      >
+        
+        <Image src="/logo_color.svg" alt="KiteMill Logo" width={144} height={146} />
+        
+    </header>{children}
+    <footer
+    style={{ 
+      padding: "1rem",
+    }}>
+    </footer>
+  </body>
+</html>
+     
   );
 }
