@@ -472,10 +472,10 @@ const Form = () => {
 
         <div>
           <label htmlFor="correction" className="block text-gray-700 text-sm font-bold mb-2">Correction:</label>
-          <input
-            type="text"
+          <textarea
             id="correction"
             name="correction"
+            placeholder='Immediate action taken to correct the situation i.e. how to make situation safe or fix the problem to prevent further negative consequences.'
             value={formData.correction}
             onChange={handleChange}
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -484,10 +484,10 @@ const Form = () => {
 
         <div>
           <label htmlFor="correctiveAction" className="block text-gray-700 text-sm font-bold mb-2">Corrective Action:</label>
-          <input
-            type="text"
+          <textarea
             id="correctiveAction"
             name="correctiveAction"
+            placeholder='Proposed solution to prevent the situation from happening again i.e. will typically address issues that led up to the situation.'
             value={formData.correctiveAction}
             onChange={handleChange}
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
