@@ -293,8 +293,22 @@ const Form = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle the form submission, e.g., calling an API endpoint
-    console.log(formData);
+    try {
+      const res = await fetch('/api/submitForm', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+      if (!res.ok) {
+        throw new Error(`HTTP error! status: ${res.status}`);
+      }
+      const result = await res.json(); // Only parse as JSON if response is OK
+      console.log('Submission Result:', result);
+    } catch (error) {
+      console.error('Error during form submission:', error);
+    }
   };
 
   const customStyles = {
