@@ -1,10 +1,11 @@
 import sql from 'mssql';
 
+
 const dbConfig = {
-  user: "kitemill@nc-i-db-server",
-  password: "", // Ensure this is securely handled
-  database: "nc_i_app_db",
-  server: "nc-i-db-server.database.windows.net",
+ user: process.env.DB_USER,
+ password: process.env.DB_PASSWORD, // Ensure this is securely handled
+ database: process.env.DB_DATABASE,
+ server: process.env.DB_SERVER,
   pool: {
     max: 10,
     min: 0,
