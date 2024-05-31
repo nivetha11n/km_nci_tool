@@ -1,4 +1,6 @@
 import Form from './form';
+import withAuth from './withAuth';
+
 
 const page = () => {
   return (
@@ -8,4 +10,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default withAuth(page);
