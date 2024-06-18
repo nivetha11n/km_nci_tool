@@ -337,7 +337,7 @@ const Form = ({ session }) => {
   return (
     
     <form name="nciForm" onSubmit={handleSubmit} className="max-w-3xl mx-auto p-5 space-y-4 bg-white shadow-lg rounded px-8 pt-8 pb-8 mb-4">
-      <h1 className="block text-gray-500 text-2xl font-bold mb-5 text-center font-sans">Non-Conformity & Incident Form</h1>
+      <h1 className="block text-gray-500 text-2xl font-bold mb-5 text-center font-sans">NON-CONFORMITY & INCIDENT FORM</h1>
       <div>
         <label htmlFor="createdBy" className="block text-gray-700 text-sm font-bold mb-2">Created By:</label>
         <input
