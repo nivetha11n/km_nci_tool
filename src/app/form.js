@@ -2,9 +2,8 @@
 
 import React, { useState } from 'react';
 import Select from 'react-select';
-import { useSession, signIn } from 'next-auth/react';
 
-const Form = ({ session }) => {
+const Form = () => {
   const [formData, setFormData] = useState({
     createdBy: '',
     email: '',
@@ -22,16 +21,6 @@ const Form = ({ session }) => {
     directCauseOther: '',
     underlyingCauseOther: '',
   });
-
-  useEffect(() => {
-    if (session) {
-      setFormData((prevData) => ({
-        ...prevData,
-        createdBy: session.user.name,
-        email: session.user.email,
-      }));
-    }
-  }, [session]);
 
 
   const optionsCategory = [
