@@ -306,8 +306,15 @@ const Form = () => {
       }
       const result = await res.json(); // Only parse as JSON if response is OK
       console.log('Submission Result:', result);
+      if (result.caseNumber) {
+        alert(`Submission successful! Your case number is: ${result.caseNumber}`);
+      } else {
+        alert('Submission successful, but case number is not available.');
+      }
+
     } catch (error) {
       console.error('Error during form submission:', error);
+      alert('There was an error submitting the form. Please try again.');
     }
   };
 

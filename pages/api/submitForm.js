@@ -78,7 +78,7 @@ async function submitForm(req, res) {
           underlyingCauseOther,
           subCategoryDirectCause,
           subCategoryUnderlyingCause
-        ) VALUES (
+        ) OUTPUT INSERTED.ID VALUES (
           @createdBy,
           @email,
           @observationDate,
@@ -96,8 +96,10 @@ async function submitForm(req, res) {
         )
       `);
 
+      const caseNumber = result.recordset[0].ID;
+
       await sql.close();
-      res.status(200).json({ message: 'Form submitted successfully', data: result.recordset });
+      res.status(200).json({ message: 'Form submitted successfully', caseNumber: caseNumber, data: result.recordset });
     } catch (err) {
       console.error('SQL error', err);
       res.status(500).json({ message: 'Error submitting form', error: err.message });
