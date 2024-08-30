@@ -10,7 +10,7 @@ const Form = () => {
     observationDate: new Date().toISOString().split('T')[0],
     category: null,
     department: null,
-    subDepartment: null, // Sub-selection state
+    subDepartment: null, 
     descriptionOfIncident: '',
     directCause: null,
     underlyingCause: null,
@@ -22,12 +22,13 @@ const Form = () => {
     underlyingCauseOther: '',
   });
 
+  const [submissionMessage, setSubmissionMessage] = useState(null);
+
 
   const optionsCategory = [
     { value: 'hseIncident', label: 'HSE Incident' },
     { value: 'qualityNonConformity', label: 'Quality Non Conformity' },
     { value: 'areasOfImprovements', label: 'Areas of Improvement' },
-    //{ value: 'other', label: 'Other' }, 
   ];
 
 
@@ -307,9 +308,9 @@ const Form = () => {
       const result = await res.json(); // Only parse as JSON if response is OK
       console.log('Submission Result:', result);
       if (result.caseNumber) {
-        alert(`Submission successful! Your case number is: ${result.caseNumber}`);
+        setSubmissionMessage(`Submission successful! Your case number is: ${result.caseNumber}`);
       } else {
-        alert('Submission successful, but case number is not available.');
+        setSubmissionMessage('Submission successful, but case number is not available.');
       }
 
     } catch (error) {
@@ -533,6 +534,8 @@ const Form = () => {
       >
         Submit
       </button>
+      
+      {submissionMessage && <p className="mt-4 text-green-600">{submissionMessage}</p>}
     </form>
   );
 };
