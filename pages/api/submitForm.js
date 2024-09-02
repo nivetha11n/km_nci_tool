@@ -1,11 +1,11 @@
+import nodemailer from 'nodemailer';
 import sql from 'mssql';
 
-
 const dbConfig = {
- user: process.env.DB_USER,
- password: process.env.DB_PASSWORD, // Ensure this is securely handled
- database: process.env.DB_DATABASE,
- server: process.env.DB_SERVER,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD, // Ensure this is securely handled
+  database: process.env.DB_DATABASE,
+  server: process.env.DB_SERVER,
   pool: {
     max: 10,
     min: 0,
@@ -15,9 +15,20 @@ const dbConfig = {
     encrypt: true, // for Azure SQL
     trustServerCertificate: false, // keep false for production
   },
+  connectionTimeout: 30000, // 30 seconds timeout for initial connection
+  requestTimeout: 30000, // 30 seconds timeout for each request
 };
 
- 
+const transporter = nodemailer.createTransport({
+  host: process.env.SMTP_HOST,
+  port: process.env.SMTP_PORT,
+  secure: process.env.SMTP_PORT === "465", // use SSL if port is 465
+  auth: {
+    user: process.env.SMTP_USER,
+    pass: process.env.SMTP_PASSWORD,
+  },
+});
+
 async function submitForm(req, res) {
   if (req.method === 'POST') {
     try {
@@ -32,10 +43,10 @@ async function submitForm(req, res) {
         correction,
         correctiveAction,
         linkToReleventDocument,
-        directCauseOther, // assuming this is directCause.label if directCause exists
-        underlyingCauseOther, // assuming this is underlyingCause.label if underlyingCause exists
+        directCauseOther,
+        underlyingCauseOther,
         subCategoryDirectCause,
-        subCategoryUnderlyingCause
+        subCategoryUnderlyingCause,
       } = req.body;
 
       const categoryLabel = category ? category.label : null;
@@ -98,11 +109,26 @@ async function submitForm(req, res) {
 
       const caseNumber = result.recordset[0].ID;
 
-      await sql.close();
-      res.status(200).json({ message: 'Form submitted successfully', caseNumber: caseNumber, data: result.recordset });
+      const mailOptions = {
+        from: process.env.SMTP_USER,
+        to: email,
+        subject: 'Submission Confirmation',
+        text: `Thank you for your submission. Your case number is: ${caseNumber}`,
+      };
+
+      try {
+        await transporter.sendMail(mailOptions);
+        console.log('Email sent successfully');
+      } catch (error) {
+        console.error('Error sending email', error);
+      }
+
+      res.status(200).json({ message: 'Form submitted successfully', caseNumber, data: result.recordset });
     } catch (err) {
       console.error('SQL error', err);
       res.status(500).json({ message: 'Error submitting form', error: err.message });
+    } finally {
+      await sql.close();
     }
   } else {
     res.setHeader('Allow', ['POST']);
