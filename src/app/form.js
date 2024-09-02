@@ -25,6 +25,7 @@ const Form = () => {
 
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [submissionMessage, setSubmissionMessage] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     if (typeof window !== 'undefined' && typeof document !== 'undefined') {
@@ -264,6 +265,7 @@ const Form = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
     try {
       const res = await fetch('/api/submitForm', {
         method: 'POST',
@@ -289,6 +291,8 @@ const Form = () => {
       console.error('Error during form submission:', error);
       setSubmissionMessage('There was an error submitting the form. Please try again.');
       setModalIsOpen(true);
+    }finally {
+      setIsLoading(false); // Stop loading state
     }
   };
 
@@ -331,6 +335,12 @@ const Form = () => {
 
   return (
     <>
+    {isLoading && ( // Show loading spinner when isLoading is true
+        <div className="fixed inset-0 flex items-center justify-center bg-gray-700 bg-opacity-90 z-50">
+          <div className="text-white text-lg font-semibold">Submitting...</div>
+        </div>
+      )}
+
       <form name="nciForm" onSubmit={handleSubmit} className="max-w-3xl mx-auto p-5 space-y-4 bg-white shadow-lg rounded px-8 pt-8 pb-8 mb-4">
         <h1 className="block text-gray-500 text-2xl font-bold mb-5 text-center font-sans">Non-Conformity & Incident Form</h1>
         <div>
