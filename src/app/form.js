@@ -11,7 +11,8 @@ const Form = () => {
     observationDate: new Date().toISOString().split('T')[0],
     category: null,
     department: null,
-    subDepartment: null, 
+    subDepartment: null,
+    shortDescription: '', 
     descriptionOfIncident: '',
     directCause: null,
     underlyingCause: null,
@@ -23,9 +24,11 @@ const Form = () => {
     underlyingCauseOther: '',
   });
 
+  const [charCount, setCharCount] = useState(100);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [submissionMessage, setSubmissionMessage] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [errors, setErrors] = useState({});
 
   useEffect(() => {
     if (typeof window !== 'undefined' && typeof document !== 'undefined') {
@@ -255,6 +258,19 @@ const Form = () => {
     });
   };
 
+  const handleShortDescriptionChange = (e) => {
+    const value = e.target.value;
+
+    // Only update if character count is within limit
+    if (value.length <= 100) {
+      setFormData({
+        ...formData,
+        shortDescription: value,
+      });
+      setCharCount(100 - value.length); // Update the character count
+    }
+  };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevState) => ({
@@ -263,8 +279,25 @@ const Form = () => {
     }));
   };
 
+  const validateForm = () => {
+    const newErrors = {};
+    if (!formData.createdBy) newErrors.createdBy = 'Created By is required';
+    if (!formData.email) newErrors.email = 'Email is required';
+    if (!formData.shortDescription) newErrors.shortDescription = 'Short description is required';
+    if (!formData.descriptionOfIncident) newErrors.descriptionOfIncident = 'Description of incident is required';
+    return newErrors;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+        // Validate form before submission
+        const newErrors = validateForm();
+        if (Object.keys(newErrors).length > 0) {
+          setErrors(newErrors); // Set errors if any fields are invalid
+          return; // Stop form submission
+        }
+
     setIsLoading(true);
     try {
       const res = await fetch('/api/submitForm', {
@@ -353,6 +386,7 @@ const Form = () => {
             onChange={handleChange}
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           />
+          {errors.createdBy && <p className="text-red-500 text-xs italic">{errors.createdBy}</p>}
         </div>
         <div>
           <label htmlFor="email" className="block text-gray-700 text-sm font-bold mb-2">Email:</label>
@@ -364,6 +398,7 @@ const Form = () => {
             onChange={handleChange}
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
           />
+           {errors.email && <p className="text-red-500 text-xs italic">{errors.email}</p>}
         </div>
         <div>
           <label htmlFor="observationDate" className="block text-gray-700 text-sm font-bold mb-2">Date of Observation:</label>
@@ -485,6 +520,21 @@ const Form = () => {
           </div>
         )}
         <div>
+          <label htmlFor="shortDescription" className="block text-gray-700 text-sm font-bold mb-2">
+            Short Description:
+          </label>
+          <textarea
+            id="shortDescription"
+            name="shortDescription"
+            value={formData.shortDescription}
+            onChange={handleShortDescriptionChange}
+            maxLength={100} // Limit the characters to 100
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          />
+          <p className="text-sm text-gray-600">{charCount} characters remaining</p>
+          {errors.shortDescription && <p className="text-red-500 text-xs italic">{errors.shortDescription}</p>}
+        </div>
+        <div>
           <label htmlFor="descriptionOfIncident" className="block text-gray-700 text-sm font-bold mb-2">Description of Incident:</label>
           <textarea
             id="descriptionOfIncident"
@@ -493,7 +543,8 @@ const Form = () => {
             onChange={handleChange}
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
           />
-        </div>
+          {errors.descriptionOfIncident && <p className="text-red-500 text-xs italic">{errors.descriptionOfIncident}</p>}
+          </div>
         <div>
           <label htmlFor="correction" className="block text-gray-700 text-sm font-bold mb-2">Correction:</label>
           <textarea

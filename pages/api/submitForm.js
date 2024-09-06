@@ -39,6 +39,7 @@ async function submitForm(req, res) {
         category,
         department,
         subDepartment,
+        shortDescription,
         descriptionOfIncident,
         correction,
         correctiveAction,
@@ -64,6 +65,7 @@ async function submitForm(req, res) {
       request.input('category', sql.NVarChar(255), categoryLabel);
       request.input('department', sql.NVarChar(255), departmentLabel);
       request.input('subDepartment', sql.NVarChar(255), subDepartmentLabel);
+      request.input('shortDescription', sql.NVarChar(105), subDepartmentLabel);
       request.input('descriptionOfIncident', sql.NVarChar(sql.MAX), descriptionOfIncident);
       request.input('correction', sql.NVarChar(sql.MAX), correction);
       request.input('correctiveAction', sql.NVarChar(sql.MAX), correctiveAction);
@@ -81,6 +83,7 @@ async function submitForm(req, res) {
           category,
           department,
           subDepartment,
+          shortDescription,
           descriptionOfIncident,
           correction,
           correctiveAction,
@@ -96,6 +99,7 @@ async function submitForm(req, res) {
           @category,
           @department,
           @subDepartment,
+          @shortDescription,
           @descriptionOfIncident,
           @correction,
           @correctiveAction,
