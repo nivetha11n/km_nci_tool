@@ -65,7 +65,7 @@ async function submitForm(req, res) {
       request.input('category', sql.NVarChar(255), categoryLabel);
       request.input('department', sql.NVarChar(255), departmentLabel);
       request.input('subDepartment', sql.NVarChar(255), subDepartmentLabel);
-      request.input('shortDescription', sql.NVarChar(105), subDepartmentLabel);
+      request.input('shortDescription', sql.NVarChar(105), shortDescription);
       request.input('descriptionOfIncident', sql.NVarChar(sql.MAX), descriptionOfIncident);
       request.input('correction', sql.NVarChar(sql.MAX), correction);
       request.input('correctiveAction', sql.NVarChar(sql.MAX), correctiveAction);
@@ -116,8 +116,21 @@ async function submitForm(req, res) {
       const mailOptions = {
         from: process.env.SMTP_USER,
         to: email,
-        subject: 'Submission Confirmation',
-        text: `Thank you for your submission. Your case number is: ${caseNumber}`,
+        subject: `NCI Submitted Successfully, Case No : ${caseNumber}`,
+        text:` 
+        
+        Thank you for your submission, below are the details :
+
+         - Case Number: ${caseNumber}
+         - Category: ${categoryLabel} 
+         - Department: ${departmentLabel}
+         - Short Description: ${shortDescription}
+    
+        If you need to update or correct any details, please contact us.
+        
+        Best Regards,
+        NCI Team
+      `,
       };
 
       try {
