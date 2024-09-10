@@ -4,6 +4,16 @@ import React, { useState, useEffect } from 'react';
 import Select from 'react-select';
 import Modal from 'react-modal';
 
+// Add this function to decode the base64 token
+const decodeToken = (token) => {
+  const base64Url = token.split('.')[1];
+  const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+  const jsonPayload = decodeURIComponent(atob(base64).split('').map(function (c) {
+    return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+  }).join(''));
+  return JSON.parse(jsonPayload);
+};
+
 const Form = () => {
   const [formData, setFormData] = useState({
     createdBy: '',
@@ -29,6 +39,44 @@ const Form = () => {
   const [submissionMessage, setSubmissionMessage] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState({});
+
+
+// Use effect to fetch user info and autofill name and email
+  useEffect(() => {
+    const fetchUserInfo = async () => {
+      // Check if running locally (localhost or development mode)
+      if (typeof window !== 'undefined' && window.location.hostname === 'localhost') {
+        // Mock user data for local development
+        setFormData((prevFormData) => ({
+          ...prevFormData,
+          createdBy: 'Local Developer',
+          email: 'nna@kitemill.com',
+        }));
+      } else {
+        // Running on production (Azure App Service)
+        try {
+          const response = await fetch('/.auth/me');
+          const userInfo = await response.json();
+  
+          if (userInfo && userInfo[0]) {
+            const decodedToken = decodeToken(userInfo[0].id_token);
+            const userName = decodedToken.name;
+            const userEmail = decodedToken.email || decodedToken.preferred_username;
+  
+            setFormData((prevFormData) => ({
+              ...prevFormData,
+              createdBy: userName,
+              email: userEmail,
+            }));
+          }
+        } catch (error) {
+          console.error('Error fetching user info:', error);
+        }
+      }
+    };
+  
+    fetchUserInfo();
+  }, []);
 
   useEffect(() => {
     if (typeof window !== 'undefined' && typeof document !== 'undefined') {
