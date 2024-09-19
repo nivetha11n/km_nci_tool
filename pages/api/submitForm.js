@@ -76,7 +76,7 @@ async function submitForm(req, res) {
       request.input('subCategoryUnderlyingCause', sql.NVarChar(255), subCategoryUnderlyingCauseLabel);
 
       const result = await request.query(`
-        INSERT INTO devnci (
+        INSERT INTO prod_nci (
           createdBy,
           email,
           observationDate,
@@ -91,7 +91,8 @@ async function submitForm(req, res) {
           directCauseOther,
           underlyingCauseOther,
           subCategoryDirectCause,
-          subCategoryUnderlyingCause
+          subCategoryUnderlyingCause,
+          nciStatus
         ) OUTPUT INSERTED.ID VALUES (
           @createdBy,
           @email,
@@ -107,7 +108,8 @@ async function submitForm(req, res) {
           @directCauseOther,
           @underlyingCauseOther,
           @subCategoryDirectCause,
-          @subCategoryUnderlyingCause
+          @subCategoryUnderlyingCause,
+          'Active'
         )
       `);
 
