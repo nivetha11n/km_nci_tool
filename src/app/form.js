@@ -569,7 +569,7 @@ const Form = () => {
         )}
         <div>
           <label htmlFor="shortDescription" className="block text-gray-700 text-sm font-bold mb-2">
-            Short Description:
+            Descriptive Title:
           </label>
           <textarea
             id="shortDescription"

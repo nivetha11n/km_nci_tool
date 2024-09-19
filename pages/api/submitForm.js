@@ -124,7 +124,7 @@ async function submitForm(req, res) {
          - Case Number: ${caseNumber}
          - Category: ${categoryLabel} 
          - Department: ${departmentLabel}
-         - Short Description: ${shortDescription}
+         - Descriptive Title: ${shortDescription}
     
         If you need to update or correct any details, please contact us.
         
